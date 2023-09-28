@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .lol {
+    box-shadow: 0px 4px 20px 0px #0000001a;
+  }
+}
