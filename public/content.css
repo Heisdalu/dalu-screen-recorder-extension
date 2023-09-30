@@ -1,55 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-  .lol {
-    box-shadow: 0px 4px 20px 0px #0000001a;
-    height: 100px;
-  }
-
-  .gee {
-    background-color: red;
-    font-size: 2rem;
-  }
-}
-
-.ce_main {
-  width: 400px;
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  position: absolute;
-  z-index: 999999;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  color: white;
-  background-color: gray;
-}
-
-#ce_name {
-  font-size: 70px;
-}
-
-#ce_button {
-  padding: 30px 30px;
-  border-radius: 5px;
-
-  font-size: 30px;
-
-  background-color: black;
-
-  cursor: pointer;
-}
-
-/* my class */
-
-.container {
-  border: 1px solid;
+.containerDalu {
   display: flex;
   align-items: center;
   position: fixed;
@@ -58,15 +7,12 @@
   width: 650px;
 }
 
-.video_section {
-  height: 9rem;
-  border-radius: 50%;
-  width: 9rem;
-  background-color: black;
-  left: 4rem;
+.videoDalu {
+  width: 100px;
+  height: 100px;
 }
 
-.my_modal {
+.my_modalDalu {
   margin-left: 1rem;
   display: flex;
   border: 1px solid black;
@@ -77,7 +23,7 @@
   background-color: #141414;
 }
 
-.timer {
+.timerDalu {
   color: #ffffff;
   padding: 0.5rem 1rem;
   display: flex;
@@ -85,7 +31,7 @@
   border-right: 1px solid #e8e8e8;
 }
 
-.redDot {
+.redDotDalu {
   border-radius: 1.0625rem;
   background: #c00404;
   width: 0.625rem;
@@ -94,10 +40,10 @@
   margin-left: 0.5rem;
 }
 
-.pause,
-.stop,
-.camera,
-.mic {
+.pauseDalu,
+.stopDalu,
+.cameraDalu,
+.micDalu {
   margin-left: 1rem;
   color: white;
   font-size: 0.75rem;
@@ -106,7 +52,12 @@
   align-items: center;
 }
 
-.delete {
+.stopLineDalu:active,
+.deleteDalu:active {
+  background-color: gray;
+}
+
+.deleteDalu {
   margin-left: 1rem;
   font-size: 0.75rem;
   display: flex;
@@ -118,12 +69,13 @@
   border-radius: 50%;
   border: 1px solid #000;
   background: #4b4b4b;
+  cursor: pointer;
 }
 
-.pauseLine,
-.stopLine,
-.cameraLine,
-.micLine {
+.pauseLineDalu,
+.stopLineDalu,
+.cameraLineDalu,
+.micLineDalu {
   background-color: white;
   width: 2.75rem;
   height: 2.75rem;
@@ -131,19 +83,13 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  cursor: pointer;
 }
 
-.disable {
+.disableDalu {
   background-color: gray;
 }
 
-.line_svg {
+.line_svgDalu {
   margin-right: 0.5rem;
 }
-
-.sliderCon {
-  border: 1px solid;
-}
-
-
-

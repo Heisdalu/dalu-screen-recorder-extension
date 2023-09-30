@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "manifest_version": 3,
   "action": {
-    "default_popup": "../src/components/Popup/PopUp.tsx"
-  }
+    "default_popup": "index.html"
+  },
+  "permissions": ["scripting", "activeTab", "tabs"],
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "host_permissions": ["http://*/", "https://*/*"]
 }
