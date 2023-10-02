@@ -1,4 +1,4 @@
-console.log("i am injected already, zenitsu.. let's build this thing");
+console.log("i am injected already, zenitsu");
 
 let recorder, stream, audio, mixedStream, stopAction;
 
@@ -129,31 +129,83 @@ const desktop_Ui = `
       </div>
 `;
 
+const loading_UI = `<a href="#dalu" id='loadingDalu' class="loadingDalu">Loading Video...</a>`;
+
+// generate random string
+function generateRandomString() {
+  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(Math.random() * 10);
+    result += characters.charAt(randomIndex);
+  }
+
+  return result;
+}
+
+//event-listeners
 const commands = () => {
   document.querySelector(".deleteDalu").addEventListener("click", () => {
-    console.log("delteeeeeeeee");
     recorder.stop();
     stream.getTracks().forEach((track) => track.stop());
     audio.getTracks().forEach((track) => track.stop());
-    console.log(document.getElementById("containerDalu"));
-    document.getElementById("containerDalu").remove()
+    document.getElementById("containerDalu").remove();
+    recorder = stream = audio = mixedStream = stopAction = "";
   });
 
   document.querySelector(".stopDalu").addEventListener("click", () => {
-    console.log("stop");
     stopAction = true;
     recorder.stop();
     stream.getTracks().forEach((track) => track.stop());
     audio.getTracks().forEach((track) => track.stop());
+    document.getElementById("subContainerDalu").remove();
+    document
+      .getElementById("containerDalu")
+      .insertAdjacentHTML("beforeend", loading_UI);
   });
+};
 
-  const video = document.querySelector(".videoDalu");
-  console.log(video);
+// make link active
+function activateLink(id) {
+  const redirect_dalu_url = document.getElementById("loadingDalu");
+  redirect_dalu_url.textContent = "Your video is ready. click here";
+  redirect_dalu_url.target = "_blank";
+  redirect_dalu_url.href = `https://dalu-screen-recorder-app.vercel.app/video/${id}`;
+  recorder = stream = audio = mixedStream = stopAction = null;
+  document.getElementById("containerDalu").addEventListener("click", () => {
+    setTimeout(() => {
+      document.getElementById("containerDalu").remove();
+    }, 500);
+  });
+}
+
+// an api request to send chunks
+const sendChunks = async (form_data, id) => {
+  const daluClientUrl = "https://seashell-app-4jicj.ondigitalocean.app/api";
+
+  try {
+    const data = await fetch(`${daluClientUrl}/video/stream`, {
+      method: "POST",
+      body: form_data,
+    });
+
+    if (!data.ok) {
+      throw new Error("Network response was not ok");
+    } else {
+      activateLink(id);
+      const endStream = await fetch(`${daluClientUrl}/stream/end/${id}`);
+      console.log(await endStream.json());
+    }
+  } catch (e) {
+    alert("Recording failed to connect to the endpoint");
+    document.getElementById("containerDalu").remove();
+  }
 };
 
 //another func
 const recordingProcess = async () => {
-  console.log("let'sgooo");
+  console.log("Recoding");
   try {
     stream = await navigator.mediaDevices.getDisplayMedia({
       video: { width: 9999999999, height: 9999999999 },
@@ -177,24 +229,28 @@ const recordingProcess = async () => {
     }
 
     recorder = new MediaRecorder(mixedStream);
-    console.log(recorder);
     recorder.start();
 
     const chunks = [];
 
     recorder.ondataavailable = (e) => {
-      console.log(e);
       chunks.push(e.data);
     };
 
     recorder.onstop = () => {
       if (stopAction) {
+        const id = generateRandomString();
+        const formData = new FormData();
         const completeBlob = new Blob(chunks, { type: "video/mp4" });
-        console.log(URL.createObjectURL(completeBlob));
+        formData.append("blob", completeBlob);
+        formData.append("videoId", id);
+        // console.log(URL.createObjectURL(completeBlob));
+        // console.log(id);
+        sendChunks(formData, id);
       }
     };
   } catch (e) {
-    console.log(document.getElementById("containerDalu"));
+    // console.log(document.getElementById("containerDalu"));
     alert("Permission denied");
     document.getElementById("containerDalu").remove();
   }
@@ -204,7 +260,7 @@ const recordingProcess = async () => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "start_recording") {
     const element = document.getElementById("containerDalu");
-    console.log(element);
+    // console.log(element);
     if (!element) {
       document
         .querySelector("body")

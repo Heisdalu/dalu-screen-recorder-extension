@@ -3,13 +3,22 @@
   align-items: center;
   position: fixed;
   bottom: 2rem;
-  left: 5rem;
+  left: 3rem;
   width: 650px;
 }
 
-.videoDalu {
-  width: 100px;
-  height: 100px;
+.overallBoxDalu {
+  position: fixed;
+  bottom: 4rem;
+  left: 5rem;
+}
+
+.loadingDalu {
+  padding: 1rem;
+  background-color: #120b48;
+  border-radius: 20px;
+  color: #ffffff;
+  margin-left: 2rem;
 }
 
 .my_modalDalu {

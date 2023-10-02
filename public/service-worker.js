@@ -1,5 +1,4 @@
 console.log("Hello bacground script");
-console.log(this);
 
 
 // eslint-disable-next-line no-undef
