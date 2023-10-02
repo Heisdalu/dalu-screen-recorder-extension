@@ -1,10 +1,10 @@
 console.log("i am injected already, zenitsu.. let's build this thing");
 
-let recorder, stream, audio, mixedStream;
+let recorder, stream, audio, mixedStream, stopAction;
 
 const desktop_Ui = `
- <div class="containerDalu" id="containerDalu">
-       <video class="videoDalu" height="100" width="100" controls></video>
+<div class="overallBoxDalu" id="containerDalu">
+ <div class="containerDalu" id="subContainerDalu">
 
         <div class="my_modalDalu">
           <div class="timerDalu">
@@ -126,15 +126,22 @@ const desktop_Ui = `
           
         </div>
       </div>
+      </div>
 `;
 
-const commands = (conElem) => {
+const commands = () => {
   document.querySelector(".deleteDalu").addEventListener("click", () => {
-    console.log("delteeeeeeeee", conElem);
+    console.log("delteeeeeeeee");
+    recorder.stop();
+    stream.getTracks().forEach((track) => track.stop());
+    audio.getTracks().forEach((track) => track.stop());
+    console.log(document.getElementById("containerDalu"));
+    document.getElementById("containerDalu").remove()
   });
 
   document.querySelector(".stopDalu").addEventListener("click", () => {
     console.log("stop");
+    stopAction = true;
     recorder.stop();
     stream.getTracks().forEach((track) => track.stop());
     audio.getTracks().forEach((track) => track.stop());
@@ -181,13 +188,15 @@ const recordingProcess = async () => {
     };
 
     recorder.onstop = () => {
-      const completeBlob = new Blob(chunks, { type: "video/mp4" });
-      console.log(URL.createObjectURL(completeBlob));
-      document.querySelector(".videoDalu").src =
-        URL.createObjectURL(completeBlob);
+      if (stopAction) {
+        const completeBlob = new Blob(chunks, { type: "video/mp4" });
+        console.log(URL.createObjectURL(completeBlob));
+      }
     };
   } catch (e) {
+    console.log(document.getElementById("containerDalu"));
     alert("Permission denied");
+    document.getElementById("containerDalu").remove();
   }
 };
 
@@ -201,7 +210,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         .querySelector("body")
         .insertAdjacentHTML("beforeend", desktop_Ui);
 
-      commands(element);
+      commands();
       recordingProcess();
     }
     // console.log("I received your info", message, sender, sendResponse);

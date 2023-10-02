@@ -1,11 +1,7 @@
-// eslint-disable no-undef
 console.log("Hello bacground script");
 console.log(this);
 
-//chrome
-// /^http/.test(tab.url);
 
-// inject scripts when tab have fully loaded
 // eslint-disable-next-line no-undef
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   // console.log(tabId, changeInfo, tab);

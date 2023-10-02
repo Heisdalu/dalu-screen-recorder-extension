@@ -9,6 +9,8 @@ import { useState } from "react";
 const PopUp = () => {
   const [activeVideo, setActiveVideo] = useState(true);
   const [activeAudio, setActiveAudio] = useState(true);
+  const [error, setError] = useState("");
+
   const clickAudio = () => {
     setActiveAudio((prev) => !prev);
   };
@@ -40,7 +42,10 @@ const PopUp = () => {
         throw new Error("Permission denied");
       }
     } catch {
-      console.log("error occured");
+      setError("Oops..an error occured. Refresh page");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
   };
 
@@ -130,6 +135,8 @@ const PopUp = () => {
         >
           Start Recording
         </button>
+
+        <div>{error}</div>
       </div>
     </div>
   );
